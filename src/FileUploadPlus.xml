@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<widget id="veilsun.fileuploadplus.FileUploadPlus" pluginWidget="true" needsEntityContext="true" offlineCapable="true" supportedPlatform="Web"
+    xmlns="http://www.mendix.com/widget/1.0/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.mendix.com/widget/1.0/ ../node_modules/mendix/custom_widget.xsd">
+    <name>File Upload Plus</name>
+    <description>Single file or image upload with instant preview, upload states, drag-and-drop, clipboard paste and URL import.</description>
+    <studioProCategory>Input elements</studioProCategory>
+    <studioCategory>Input Elements</studioCategory>
+    <helpUrl>https://docs.mendix.com/apidocs-mxsdk/apidocs/pluggable-widgets-property-types/</helpUrl>
+    <properties>
+        <propertyGroup caption="General">
+            <propertyGroup caption="Data source">
+                <property key="mode" type="enumeration" defaultValue="image">
+                    <caption>Upload type</caption>
+                    <description>Image: bind to a System.Image specialization. File: bind to any System.FileDocument specialization.</description>
+                    <enumerationValues>
+                        <enumerationValue key="image">Image</enumerationValue>
+                        <enumerationValue key="file">File</enumerationValue>
+                    </enumerationValues>
+                </property>
+                <property key="imageSource" type="image" required="false" allowUpload="true">
+                    <caption>Image</caption>
+                    <description>The System.Image (specialization) object to upload into, usually the data view object.</description>
+                </property>
+                <property key="fileSource" type="file" required="false" allowUpload="true">
+                    <caption>File</caption>
+                    <description>The System.FileDocument (specialization) object to upload into, usually the data view object.</description>
+                </property>
+            </propertyGroup>
+            <propertyGroup caption="Restrictions">
+                <property key="accept" type="string" required="false">
+                    <caption>Accepted types</caption>
+                    <description>Comma-separated MIME types or extensions, e.g. image/* or .pdf,.docx. Empty: image/* in Image mode, anything in File mode.</description>
+                </property>
+                <property key="maxFileSizeMb" type="decimal" defaultValue="0">
+                    <caption>Max file size (MB)</caption>
+                    <description>Client-side size limit. 0 means no client-side limit (server limits still apply).</description>
+                </property>
+            </propertyGroup>
+            <propertyGroup caption="Display">
+                <property key="showPreview" type="boolean" defaultValue="true">
+                    <caption>Show preview</caption>
+                    <description>Show a thumbnail for images (stored and newly selected).</description>
+                </property>
+                <property key="previewHeight" type="integer" defaultValue="160">
+                    <caption>Preview height (px)</caption>
+                    <description>Maximum height of the preview image.</description>
+                </property>
+                <property key="showDocumentPreview" type="boolean" defaultValue="true">
+                    <caption>Show document preview</caption>
+                    <description>Show PDFs and spreadsheets (.xlsx, .xlsm, .csv), stored or newly selected, in a preview panel below the drop zone.</description>
+                </property>
+                <property key="documentPreviewHeight" type="integer" defaultValue="360">
+                    <caption>Document preview height (px)</caption>
+                    <description>Starting height of the PDF preview. Users can drag the bottom edge to resize it, minimize it, or expand it to full view.</description>
+                </property>
+                <property key="documentPreviewInitial" type="enumeration" defaultValue="normal">
+                    <caption>Document preview starts</caption>
+                    <description>Whether the PDF preview starts open or minimized to its header bar.</description>
+                    <enumerationValues>
+                        <enumerationValue key="normal">Open</enumerationValue>
+                        <enumerationValue key="minimized">Minimized</enumerationValue>
+                    </enumerationValues>
+                </property>
+                <property key="dropzoneText" type="textTemplate" required="false">
+                    <caption>Drop zone text</caption>
+                    <description>Hint shown in the drop zone. Empty uses a default text based on the enabled input methods.</description>
+                </property>
+            </propertyGroup>
+        </propertyGroup>
+        <propertyGroup caption="Input methods">
+            <propertyGroup caption="Input methods">
+                <property key="enableDragDrop" type="boolean" defaultValue="true">
+                    <caption>Drag and drop</caption>
+                    <description>Allow dropping a file onto the widget.</description>
+                </property>
+                <property key="enablePaste" type="boolean" defaultValue="true">
+                    <caption>Clipboard paste</caption>
+                    <description>Allow pasting a file or screenshot (Ctrl/Cmd+V) while the widget has focus.</description>
+                </property>
+                <property key="enableUrlImport" type="boolean" defaultValue="false">
+                    <caption>Load from URL</caption>
+                    <description>Show a field to load a file from a URL. Only works for URLs that allow cross-origin (CORS) requests. See README.</description>
+                </property>
+            </propertyGroup>
+        </propertyGroup>
+        <propertyGroup caption="Replace and clear">
+            <propertyGroup caption="Replace">
+                <property key="confirmReplace" type="boolean" defaultValue="true">
+                    <caption>Confirm replace</caption>
+                    <description>Ask for confirmation before replacing an existing file.</description>
+                </property>
+                <property key="replaceMessage" type="textTemplate" required="false">
+                    <caption>Replace confirmation text</caption>
+                    <description>Empty uses the default text.</description>
+                </property>
+            </propertyGroup>
+            <propertyGroup caption="Clear">
+                <property key="allowClear" type="boolean" defaultValue="true">
+                    <caption>Show clear button</caption>
+                    <description>Show a Clear button for a stored file. It runs the On clear action, which must remove the file (e.g. a microflow that deletes the object); the widget API cannot remove stored contents itself.</description>
+                </property>
+                <property key="confirmClear" type="boolean" defaultValue="true">
+                    <caption>Confirm clear</caption>
+                    <description>Ask for confirmation before clearing.</description>
+                </property>
+                <property key="clearMessage" type="textTemplate" required="false">
+                    <caption>Clear confirmation text</caption>
+                    <description>Empty uses the default text.</description>
+                </property>
+            </propertyGroup>
+        </propertyGroup>
+        <propertyGroup caption="Events">
+            <propertyGroup caption="Events">
+                <property key="onFileSelected" type="action" required="false">
+                    <caption>On file selected</caption>
+                    <description>Runs after a file is chosen. Mendix uploads the file when the page is saved, so set this to Save changes to upload immediately. Leave empty to upload with the page's own Save button.</description>
+                </property>
+                <property key="onSave" type="action" required="false">
+                    <caption>On save click</caption>
+                    <description>Shows a Save button next to Discard while a file is waiting to be uploaded, and runs this action when it is clicked. Use Save changes (or a nanoflow/microflow that starts with Save changes): Mendix uploads the file when the page is saved.</description>
+                </property>
+                <property key="saveCaption" type="textTemplate" required="false">
+                    <caption>Save button caption</caption>
+                    <description>Empty uses "Save".</description>
+                </property>
+                <property key="onUploadSuccess" type="action" required="false">
+                    <caption>On upload success</caption>
+                    <description>Runs after the file has been stored on the server (e.g. call a microflow/nanoflow or show a page).</description>
+                </property>
+                <property key="onUploadFailure" type="action" required="false">
+                    <caption>On upload failure</caption>
+                    <description>Runs when the file is rejected or the save did not store it.</description>
+                </property>
+                <property key="onClear" type="action" required="false">
+                    <caption>On clear</caption>
+                    <description>Runs when the user confirms Clear. Required for the Clear button to appear, e.g. a microflow that deletes the file object or resets it.</description>
+                </property>
+            </propertyGroup>
+        </propertyGroup>
+        <propertyGroup caption="Common">
+            <propertyGroup caption="Common">
+                <systemProperty key="Name" />
+                <systemProperty key="TabIndex" />
+            </propertyGroup>
+            <propertyGroup caption="Label">
+                <systemProperty key="Label" />
+            </propertyGroup>
+            <propertyGroup caption="Visibility">
+                <systemProperty key="Visibility" />
+            </propertyGroup>
+            <propertyGroup caption="Editability">
+                <systemProperty key="Editability" />
+            </propertyGroup>
+        </propertyGroup>
+    </properties>
+</widget>

@@ -1,0 +1,40 @@
+{
+  "name": "fileuploadplus",
+  "widgetName": "FileUploadPlus",
+  "version": "1.0.0",
+  "description": "Single file/image upload with preview, progress states, drag-and-drop, paste and URL import.",
+  "copyright": "© VeilSun 2026. All rights reserved.",
+  "author": "VeilSun",
+  "engines": {
+    "node": ">=20"
+  },
+  "license": "Apache-2.0",
+  "config": {
+    "projectPath": "W:/Mendix Projects/Certification Projects/Noodler/Noodler-main/",
+    "mendixHost": "http://localhost:8080",
+    "developmentPort": 3000
+  },
+  "packagePath": "veilsun",
+  "scripts": {
+    "start": "pluggable-widgets-tools start:server",
+    "dev": "pluggable-widgets-tools start:web",
+    "build": "pluggable-widgets-tools build:web",
+    "lint": "pluggable-widgets-tools lint",
+    "lint:fix": "pluggable-widgets-tools lint:fix",
+    "prerelease": "npm run lint",
+    "release": "pluggable-widgets-tools release:web"
+  },
+  "devDependencies": {
+    "@mendix/pluggable-widgets-tools": "11.11.0"
+  },
+  "dependencies": {
+    "classnames": "^2.5.1",
+    "read-excel-file": "^9.3.14"
+  },
+  "overrides": {
+    "shelljs": "0.8.5"
+  },
+  "optionalDependencies": {
+    "@napi-rs/lzma-win32-x64-msvc": "1.5.3"
+  }
+}
